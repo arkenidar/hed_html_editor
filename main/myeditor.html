@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HED - HTML editor</title>
+</head>
+<body>
+<script src="jquery-3.2.1.js"></script>
+<input style="display:none;" id="fileDialog" type="file" nwsaveas />
+<button onclick="chooseFile(openHTML)">open HTML</button>
+<button onclick="chooseFile(saveHTML)">save HTML</button>
+<script src="ckeditor/ckeditor.js"></script>
+<div id="editable"><textarea id="editor" rows="10" cols="50"></textarea></div>
+<script>
+function chooseFile(opener) {
+var chooser = document.querySelector('#fileDialog')
+chooser.addEventListener('change', function() { opener(this.value) }, false)
+chooser.click()
+}
+const fs = require('fs')
+function openHTML(name){
+	jQuery('#editable').html('<textarea id="editor" rows="10" cols="80"></textarea>')
+	var content = fs.readFileSync(name)
+	jQuery('#editor').text(content)
+	CKEDITOR.replace('editor')//, {toolbar: 'Basic'})
+}
+function saveHTML(name){
+	var content = CKEDITOR.instances.editor.getData()
+	fs.writeFileSync(name, content)
+}
+function getName(){
+	return 'main/'+jQuery('#name').val()
+}
+CKEDITOR.replace('editor')
+</script>
+</body>
+</html>
