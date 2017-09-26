@@ -6,19 +6,26 @@
 </head>
 <body>
 <script src="jquery-3.2.1.js"></script>
-<input style="display:none;" id="fileDialog" type="file" nwsaveas />
-<button onclick="chooseFile(openHTML)">open HTML</button>
-<button onclick="chooseFile(saveHTML)">save HTML</button>
+<input style="display:none;" id="fileDialogOpen" type="file" />
+<input style="display:none;" id="fileDialogSaveAs" type="file" nwsaveas />
+<button onclick="chooseFileOpen(openHTML)">open HTML</button>
+<button onclick="chooseFileSaveAs(saveHTML)">save HTML</button>
 <script src="ckeditor/ckeditor.js"></script>
 <div id="editable"><textarea id="editor" rows="10" cols="50"></textarea></div>
 <script>
-function chooseFile(opener) {
-var chooser = document.querySelector('#fileDialog')
+function chooseFileOpen(opener) {
+var chooser = document.querySelector('#fileDialogOpen')
 chooser.addEventListener('change', function() { opener(this.value) }, false)
+chooser.click()
+}
+function chooseFileSaveAs(saver) {
+var chooser = document.querySelector('#fileDialogSaveAs')
+chooser.addEventListener('change', function() { saver(this.value) }, false)
 chooser.click()
 }
 const fs = require('fs')
 function openHTML(name){
+	alert(name)
 	jQuery('#editable').html('<textarea id="editor" rows="10" cols="80"></textarea>')
 	var content = fs.readFileSync(name)
 	jQuery('#editor').text(content)
